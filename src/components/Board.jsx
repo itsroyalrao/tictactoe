@@ -6,9 +6,8 @@ function Board() {
   const [isX, setIsX] = useState(true);
 
   const handleClick = (i) => {
-    const copyState = [...state];
-
-    if (copyState[i] === null) {
+    if (state[i] === null) {
+      const copyState = [...state];
       copyState[i] = isX ? "X" : "O";
       setState(copyState);
       setIsX(!isX);
@@ -48,15 +47,40 @@ function Board() {
   }
   const isDraw = checkDraw();
 
+  const handleReset = () => {
+    setState(Array(9).fill(null));
+  };
+
   return (
     <>
       <div className="bg-[rgb(39,39,39)] h-screen space-y-1 flex flex-col justify-center items-center">
-        {isDraw ? (
-          <div className="text-white text-2xl">Draw</div>
-        ) : isWinner ? (
-          <div className="text-white text-2xl">{isWinner} won the game</div>
+        {isWinner ? (
+          <div className="flex flex-col items-center space-y-2">
+            <div className="text-white text-3xl flex justify-center">
+              {isWinner} won the game
+            </div>
+            <div
+              className="w-fit text-xl bg-gray-300 rounded-lg px-2 py-1 cursor-pointer"
+              onClick={() => handleReset()}
+            >
+              Play again
+            </div>
+          </div>
+        ) : isDraw ? (
+          <div className="flex flex-col items-center space-y-2">
+            <div className="text-white text-3xl flex justify-center">Draw</div>
+            <div
+              className="w-fit text-xl bg-gray-300 rounded-lg px-2 py-1 cursor-pointer"
+              onClick={() => handleReset()}
+            >
+              Play again
+            </div>
+          </div>
         ) : (
           <>
+            <div className="text-white text-3xl mb-4">
+              {isX ? "X's" : "O's"} turn
+            </div>
             <div className="w-fit flex space-x-1">
               <Square clicked={() => handleClick(0)} value={state[0]} />
               <Square clicked={() => handleClick(1)} value={state[1]} />
